@@ -11,13 +11,12 @@ namespace BookingApi.Data
         }
 
         public DbSet<User> Users { get; set; }
-        public DbSet<Accommodation> Accommodations { get; set; }
+        public DbSet<Apartment> Apartments { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
-        public DbSet<AccommodationReservation> AccommodationsReservations {  get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Accommodation>()
+            modelBuilder.Entity<Apartment>()
                 .Property(a => a.PricePerNight)
                 .HasColumnType("decimal(18, 2)");
 

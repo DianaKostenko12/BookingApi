@@ -1,10 +1,5 @@
 ﻿using BookingApi.Data;
 using BookingApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DAL.Repositories.Reservations
 {
@@ -38,16 +33,16 @@ namespace DAL.Repositories.Reservations
             return _context.Reservations.Where(r => r.Id == id).FirstOrDefault();
         }
 
-        public ICollection<Reservation> GetReservationsByAccommodation(int accommodationId)
-        {
-            return _context.AccommodationsReservations.Where(a => a.AccommodationId == accommodationId).Select(r => r.Reservation).ToList();
-        }
+        //public ICollection<Reservation> GetReservationsByAccommodation(int accommodationId)
+        //{
+        //    return _context.AccommodationsReservations.Where(a => a.AccommodationId == accommodationId).Select(r => r.Reservation).ToList();
+        //}
 
         public ICollection<Reservation> GetReservationsByUser(int userId)
         {
             return _context.Reservations.Where(u => u.User.Id == userId).ToList();
         }
-
+        
         public bool ReservationExists(int reservationId)
         {
             return _context.Reservations.Any(u => u.Id == reservationId);

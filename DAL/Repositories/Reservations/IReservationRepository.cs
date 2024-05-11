@@ -17,6 +17,6 @@ namespace DAL.Repositories.Reservations
         bool DeleteReservation(Reservation reservation);
         bool Save();
         ICollection<Reservation> GetReservationsByUser(int userId);
-        ICollection<Reservation> GetReservationsByAccommodation(int accommodationId);
+        //ICollection<Reservation> GetReservationsByAccommodation(int accommodationId);
     }
 }
