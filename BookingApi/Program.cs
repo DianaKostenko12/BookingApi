@@ -1,7 +1,7 @@
 
 using BookingApi.Data;
-using BookingApi.Interfaces;
 using BookingApi.Repository;
+using DAL.Repositories.Users;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookingApi

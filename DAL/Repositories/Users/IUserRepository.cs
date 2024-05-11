@@ -1,11 +1,11 @@
 ﻿using BookingApi.Models;
 
-namespace BookingApi.Interfaces
+namespace DAL.Repositories.Users
 {
     public interface IUserRepository
     {
         IEnumerable<User> GetUsers();
-        bool UserExists(int userId);    
+        bool UserExists(int userId);
         User GetUserById(int id);
         bool CreateUser(User user);
         bool UpdateUser(User user);

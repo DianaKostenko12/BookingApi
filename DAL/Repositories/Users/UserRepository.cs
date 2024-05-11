@@ -1,6 +1,6 @@
 ﻿using BookingApi.Data;
-using BookingApi.Interfaces;
 using BookingApi.Models;
+using DAL.Repositories.Users;
 
 namespace BookingApi.Repository
 {
