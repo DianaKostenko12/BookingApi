@@ -21,18 +21,18 @@ namespace BookingApi.Data
                 .Property(a => a.PricePerNight)
                 .HasColumnType("decimal(18, 2)");
 
-            modelBuilder.Entity<AccommodationReservation>()
-                 .HasKey(ar => new { ar.AccommodationId, ar.ReservationId });
+            //modelBuilder.Entity<AccommodationReservation>()
+            //     .HasKey(ar => new { ar.AccommodationId, ar.ReservationId });
 
-            modelBuilder.Entity<AccommodationReservation>()
-                .HasOne(a => a.Accommodation)
-                .WithMany(ar => ar.AccommodationReservations)
-                .HasForeignKey(a => a.AccommodationId);
+            //modelBuilder.Entity<AccommodationReservation>()
+            //    .HasOne(a => a.Accommodation)
+            //    .WithMany(ar => ar.AccommodationReservations)
+            //    .HasForeignKey(a => a.AccommodationId);
 
-            modelBuilder.Entity<AccommodationReservation>()
-                .HasOne(r => r.Reservation)
-                .WithMany(ar => ar.AccommodationReservations)
-                .HasForeignKey(r => r.ReservationId);
+            //modelBuilder.Entity<AccommodationReservation>()
+            //    .HasOne(r => r.Reservation)
+            //    .WithMany(ar => ar.AccommodationReservations)
+            //    .HasForeignKey(r => r.ReservationId);
         }
     }
 }
