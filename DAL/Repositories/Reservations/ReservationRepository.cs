@@ -12,14 +12,19 @@ namespace DAL.Repositories.Reservations
             _context = context;
         }
 
-        public void Add(Reservation reservation)
+        public ICollection<Reservation> GetByUserEmail(string email)
         {
-            _context.Reservations.Add(reservation);
+            return _context.Reservations
+                .Include(r => r.Apartment)
+                .Where(u => u.User.Email == email)
+                .ToList();
         }
 
-        public void Delete(Reservation reservation)
+        public bool IsReservationBusy(int apartmentId, DateTime start, DateTime end)
         {
-            _context.Remove(reservation);
+            return _context.Reservations
+                .Where(r => r.ApartmentId == apartmentId)
+                .Any(r => !(end <= r.CheckInDate || start >= r.CheckOutDate));
         }
 
         public IEnumerable<Reservation> GetAll()
@@ -32,23 +37,19 @@ namespace DAL.Repositories.Reservations
             return _context.Reservations.Where(r => r.Id == id).FirstOrDefault();
         }
 
-        public ICollection<Reservation> GetByUserEmail(string email)
+        public void Add(Reservation reservation)
         {
-            return _context.Reservations
-                .Include(r => r.Apartment)
-                .Where(u => u.User.Email == email)
-                .ToList();
+            _context.Reservations.Add(reservation);
         }
-        
+
+        public void Delete(Reservation reservation)
+        {
+            _context.Remove(reservation);
+        }
         public bool Save()
         {
             var saved = _context.SaveChanges();
             return saved > 0 ? true : false;
-        }
-
-        public void Update(Reservation reservation)
-        {
-            _context.Update(reservation);
         }
     }
 }

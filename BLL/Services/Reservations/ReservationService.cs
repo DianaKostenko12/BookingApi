@@ -32,6 +32,11 @@ namespace BLL.Services.Reservations
 
             User user = _userRepository.GetUserByEmail(descriptor.Email);
 
+            if (_reservationRepository.IsReservationBusy(descriptor.RoomId, descriptor.CheckInDate, descriptor.CheckOutDate))
+            {
+                return Error.Failure(description: "Time collision");
+            }
+
             var reservation = new Reservation()
             {
                 CheckInDate = descriptor.CheckInDate,
