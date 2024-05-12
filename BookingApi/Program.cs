@@ -1,4 +1,5 @@
-
+using BLL.Services.Auth;
+using BLL.Services.Reservations;
 using BookingApi.Data;
 using BookingApi.Repository;
 using DAL.Repositories.Accommodations;
@@ -56,6 +57,9 @@ namespace BookingApi
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IApartmentRepository, ApartmentRepository>();
             builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
+
+            builder.Services.AddScoped<IReservationService, ReservationService>();
+            builder.Services.AddScoped<IAuthService, AuthService>();
 
             var app = builder.Build();
 

@@ -32,11 +32,11 @@ namespace DAL.Repositories.Reservations
             return _context.Reservations.Where(r => r.Id == id).FirstOrDefault();
         }
 
-        public ICollection<Reservation> GetByUserId(int userId)
+        public ICollection<Reservation> GetByUserEmail(string email)
         {
             return _context.Reservations
                 .Include(r => r.Apartment)
-                .Where(u => u.User.Id == userId)
+                .Where(u => u.User.Email == email)
                 .ToList();
         }
         

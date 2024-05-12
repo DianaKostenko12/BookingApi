@@ -4,7 +4,7 @@ namespace DAL.Repositories.Users
 {
     public interface IUserRepository
     {
-        Task<IEnumerable<User>> GetUsers();
+        IEnumerable<User> GetUsers();
         User GetUserByEmail(string email);
         bool CreateUser(User user);
         bool UpdateUser(User user);

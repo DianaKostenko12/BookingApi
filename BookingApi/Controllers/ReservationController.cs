@@ -1,79 +1,58 @@
 ﻿using BookingApi.DTOs;
-using BookingApi.Models;
-using DAL.Repositories.Accommodations;
-using DAL.Repositories.Reservations;
-using DAL.Repositories.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using AutoMapper;
+using BLL.Services.Reservations.Descriptors;
+using BLL.Services.Reservations;
 
 namespace BookingApi.Controllers
 {
     [ApiController, Route("reservations"), Authorize]
     public class ReservationController : ControllerBase
     {
-        private readonly IReservationRepository _reservationRepository;
-        private readonly IUserRepository _userRepository;
-        private readonly IApartmentRepository _apartmentRepository;
-        private readonly IMapper _mapper;
-        public ReservationController(IReservationRepository reservationRepository, IUserRepository userRepository, IApartmentRepository apartmentRepository, IMapper mapper)
+        private readonly IReservationService _reservationService;
+        private readonly IMapper _mapper; 
+        public ReservationController(
+            IReservationService reservationService,
+            IMapper mapper)
         {
-            _reservationRepository = reservationRepository;
-            _userRepository = userRepository;
-            _apartmentRepository = apartmentRepository;
+            _reservationService = reservationService;
             _mapper = mapper;
         }
 
         [HttpPost]
         public IActionResult BookReservation(CreateReservationRequest request)
         {
-            Apartment apartment = _apartmentRepository.GetById(request.RoomId);
-            if (apartment == null)
-            {
-                return BadRequest("Apartment is not found.");
-            }
+            var descriptor = _mapper.Map<CreateReservationDescriptor>(request);
+            descriptor.Email = User.FindFirstValue(ClaimTypes.Email);
 
-            string email = User.FindFirstValue(ClaimTypes.Email);
-            User user = _userRepository.GetUserByEmail(email);
+            var response = _reservationService.BookReservation(descriptor);
 
-            var reservation = new Reservation() 
-            {
-                CheckInDate = request.CheckInDate,
-                CheckOutDate = request.CheckOutDate,
-                User = user,
-                Apartment = apartment
-            };
-
-            _reservationRepository.Add(reservation);
-            _reservationRepository.Save();
-
-            return Ok("Successfully created");
+            return response.Match(
+                response => Ok("Successfully booked"),
+                error => Problem(statusCode: 400, detail: error.First().Description)
+            );
         }
 
-        [HttpDelete]
-        public IActionResult UnbookReservation(int id)
+        [HttpDelete("{reservationId}")]
+        public IActionResult UnbookReservation(int reservationId)
         {
-            Reservation reservation = _reservationRepository.GetById(id);
-            if (reservation == null)
-            {
-                return BadRequest("Reservation is not found");
-            }
+            var response = _reservationService.UnbookReservation(reservationId);
 
-            _reservationRepository.Delete(reservation);
-            _reservationRepository.Save();
-
-            return NoContent();
+            return response.Match(
+                response => Ok("Successfully unbooked"),
+                error => Problem(statusCode: 400, detail: error.First().Description)
+            );
         }
 
         [HttpGet]
-        public IActionResult GetReservationsByUser(int id)
+        public IActionResult GetReservationsByUser()
         {
-            var reservations = _reservationRepository.GetByUserId(id);
+            string email = User.FindFirstValue(ClaimTypes.Email);
+            var reservations = _reservationService.GetReservationsByUser(email);
 
-            List<ReservationResponse> response = _mapper.Map<List<ReservationResponse>>(reservations);
-
-            return Ok(response);
+            return Ok(_mapper.Map<List<ReservationResponse>>(reservations));
         }
     }
 }

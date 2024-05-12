@@ -1,7 +1,6 @@
 ﻿using BookingApi.Data;
 using BookingApi.Models;
 using DAL.Repositories.Users;
-using Microsoft.EntityFrameworkCore;
 
 namespace BookingApi.Repository
 {
@@ -30,9 +29,9 @@ namespace BookingApi.Repository
             return _context.Users.Where(e => e.Email == email).FirstOrDefault();
         }
 
-        public async Task<IEnumerable<User>> GetUsers()
+        public IEnumerable<User> GetUsers()
         {
-            return await _context.Users.ToListAsync();
+            return _context.Users.ToList();
         }
 
         public bool Save()
