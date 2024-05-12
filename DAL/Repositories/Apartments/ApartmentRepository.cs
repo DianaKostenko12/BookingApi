@@ -11,27 +11,22 @@ namespace DAL.Repositories.Accommodations
             _context = context;
         }
 
-        public bool Add(Apartment accommodation)
+        public bool Add(Apartment apartment)
         {
-            _context.Add(accommodation);
+            _context.Add(apartment);
             return Save();
         }
 
-        public bool Remove(Apartment accommodation)
+        public bool Remove(Apartment apartment)
         {
-            _context.Remove(accommodation);
+            _context.Remove(apartment);
             return Save();
         }
 
-        public Apartment GetAccommodationById(int id)
+        public Apartment GetById(int id)
         {
             return _context.Apartments.Where(a => a.Id == id).FirstOrDefault();
         }
-
-        //public IEnumerable<Apartment> GetAccomodationsByReservation(int reservationId)
-        //{
-        //    return _context.Apartments.Where(r => r. == reservationId).Select(a => a.Accommodation).ToList();
-        //}
 
         public IEnumerable<Apartment> GetAll()
         {
@@ -44,9 +39,9 @@ namespace DAL.Repositories.Accommodations
             return saved > 0 ? true : false;
         }
 
-        public bool Update(Apartment accommodation)
+        public bool Update(Apartment apartment)
         {
-            _context.Update(accommodation);
+            _context.Update(apartment);
             return Save();
         }
     }

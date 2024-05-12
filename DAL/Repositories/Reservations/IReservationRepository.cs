@@ -9,14 +9,12 @@ namespace DAL.Repositories.Reservations
 {
     public interface IReservationRepository
     {
-        IEnumerable<Reservation> GetAllReservations();
-        bool ReservationExists(int reservationId);
-        Reservation GetReservationById(int id);
-        bool CreateReservation(Reservation reservation);
-        bool UpdateReservation(Reservation reservation);
-        bool DeleteReservation(Reservation reservation);
+        IEnumerable<Reservation> GetAll();
+        Reservation GetById(int id);
+        bool Add(Reservation reservation);
+        bool Update(Reservation reservation);
+        bool Delete(Reservation reservation);
         bool Save();
-        ICollection<Reservation> GetReservationsByUser(int userId);
-        //ICollection<Reservation> GetReservationsByAccommodation(int accommodationId);
+        ICollection<Reservation> GetByUserId(int userId);
     }
 }

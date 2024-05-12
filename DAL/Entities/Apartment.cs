@@ -7,7 +7,7 @@
         public string Location { get; set; }
         public decimal PricePerNight {  get; set; }
         public int NumberOfBeds {  get; set; }
-        public string Amenities { get; set; }
+        public string Description { get; set; }
         public ICollection<Reservation> Reservations { get; set; }
     }
 }

@@ -11,50 +11,40 @@ namespace DAL.Repositories.Reservations
             _context = context;
         }
 
-        public bool CreateReservation(Reservation reservation)
+        public bool Add(Reservation reservation)
         {
             _context.Reservations.Add(reservation);
             return Save();
         }
 
-        public bool DeleteReservation(Reservation reservation)
+        public bool Delete(Reservation reservation)
         {
             _context.Remove(reservation);
             return Save();
         }
 
-        public IEnumerable<Reservation> GetAllReservations()
+        public IEnumerable<Reservation> GetAll()
         {
             return _context.Reservations.OrderBy(r => r.Id).ToList();
         } 
 
-        public Reservation GetReservationById(int id)
+        public Reservation GetById(int id)
         {
             return _context.Reservations.Where(r => r.Id == id).FirstOrDefault();
         }
 
-        //public ICollection<Reservation> GetReservationsByAccommodation(int accommodationId)
-        //{
-        //    return _context.AccommodationsReservations.Where(a => a.AccommodationId == accommodationId).Select(r => r.Reservation).ToList();
-        //}
-
-        public ICollection<Reservation> GetReservationsByUser(int userId)
+        public ICollection<Reservation> GetByUserId(int userId)
         {
             return _context.Reservations.Where(u => u.User.Id == userId).ToList();
         }
         
-        public bool ReservationExists(int reservationId)
-        {
-            return _context.Reservations.Any(u => u.Id == reservationId);
-        }
-
         public bool Save()
         {
             var saved = _context.SaveChanges();
             return saved > 0 ? true : false;
         }
 
-        public bool UpdateReservation(Reservation reservation)
+        public bool Update(Reservation reservation)
         {
             _context.Update(reservation);
             return Save();
