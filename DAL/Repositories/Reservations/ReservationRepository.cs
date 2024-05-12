@@ -11,16 +11,14 @@ namespace DAL.Repositories.Reservations
             _context = context;
         }
 
-        public bool Add(Reservation reservation)
+        public void Add(Reservation reservation)
         {
             _context.Reservations.Add(reservation);
-            return Save();
         }
 
-        public bool Delete(Reservation reservation)
+        public void Delete(Reservation reservation)
         {
             _context.Remove(reservation);
-            return Save();
         }
 
         public IEnumerable<Reservation> GetAll()
@@ -44,10 +42,9 @@ namespace DAL.Repositories.Reservations
             return saved > 0 ? true : false;
         }
 
-        public bool Update(Reservation reservation)
+        public void Update(Reservation reservation)
         {
             _context.Update(reservation);
-            return Save();
         }
     }
 }

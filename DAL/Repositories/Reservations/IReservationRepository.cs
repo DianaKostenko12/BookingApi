@@ -11,9 +11,9 @@ namespace DAL.Repositories.Reservations
     {
         IEnumerable<Reservation> GetAll();
         Reservation GetById(int id);
-        bool Add(Reservation reservation);
-        bool Update(Reservation reservation);
-        bool Delete(Reservation reservation);
+        void Add(Reservation reservation);
+        void Update(Reservation reservation);
+        void Delete(Reservation reservation);
         bool Save();
         ICollection<Reservation> GetByUserId(int userId);
     }

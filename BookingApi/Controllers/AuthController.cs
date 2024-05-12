@@ -56,7 +56,7 @@ namespace BookingApi.Controllers
         {
             if (_userRepository.GetUserByEmail(request.Email) == null)
             {
-                return BadRequest("User not found.");
+                return BadRequest("User is not found.");
             }
 
             User user = _userRepository.GetUserByEmail(request.Email);
