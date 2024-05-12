@@ -6,22 +6,25 @@ using DAL.Repositories.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using AutoMapper;
 
 namespace BookingApi.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController, Authorize]
+    [ApiController, Route("reservations"), Authorize]
     public class ReservationController : ControllerBase
     {
         private readonly IReservationRepository _reservationRepository;
         private readonly IUserRepository _userRepository;
         private readonly IApartmentRepository _apartmentRepository;
-        public ReservationController(IReservationRepository reservationRepository, IUserRepository userRepository, IApartmentRepository apartmentRepository)
+        private readonly IMapper _mapper;
+        public ReservationController(IReservationRepository reservationRepository, IUserRepository userRepository, IApartmentRepository apartmentRepository, IMapper mapper)
         {
             _reservationRepository = reservationRepository;
             _userRepository = userRepository;
             _apartmentRepository = apartmentRepository;
+            _mapper = mapper;
         }
+
         [HttpPost]
         public IActionResult BookReservation(CreateReservationRequest request)
         {
@@ -63,10 +66,14 @@ namespace BookingApi.Controllers
             return NoContent();
         }
 
-        //[HttpGet]
-        //public IActionResult GetReservationsByUser(int userId) 
-        //{
+        [HttpGet]
+        public IActionResult GetReservationsByUser(int id)
+        {
+            var reservations = _reservationRepository.GetByUserId(id);
 
-        //}
+            List<ReservationResponse> response = _mapper.Map<List<ReservationResponse>>(reservations);
+
+            return Ok(response);
+        }
     }
 }

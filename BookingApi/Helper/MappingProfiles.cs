@@ -8,7 +8,17 @@ namespace BookingApi.Helper
     {
         public MappingProfiles()
         {
-            CreateMap<User, RegisterRequest>();
+            CreateMap<User, ReservationResponse>();
+            CreateMap<User, LoginRequest>();
+            CreateMap<Reservation, CreateReservationRequest>();
+            CreateMap<Reservation, ReservationResponse>();
+            CreateMap<Apartment, ApartmentResponse>();
+
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<Reservation, ReservationResponse>()
+                    .ForMember(dest => dest.ApartmentName, opt => opt.MapFrom(src => src.Apartment.Name));
+            });
         }
     }
 }

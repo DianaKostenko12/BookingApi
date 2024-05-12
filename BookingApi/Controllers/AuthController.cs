@@ -10,8 +10,7 @@ using System.Security.Cryptography;
 
 namespace BookingApi.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+    [ApiController, Route("auth")]
     public class AuthController : ControllerBase
     {
         private readonly IUserRepository _userRepository;

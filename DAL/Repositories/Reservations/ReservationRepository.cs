@@ -1,5 +1,6 @@
 ﻿using BookingApi.Data;
 using BookingApi.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Repositories.Reservations
 {
@@ -33,7 +34,10 @@ namespace DAL.Repositories.Reservations
 
         public ICollection<Reservation> GetByUserId(int userId)
         {
-            return _context.Reservations.Where(u => u.User.Id == userId).ToList();
+            return _context.Reservations
+                .Include(r => r.Apartment)
+                .Where(u => u.User.Id == userId)
+                .ToList();
         }
         
         public bool Save()

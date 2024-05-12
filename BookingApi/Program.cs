@@ -52,6 +52,7 @@ namespace BookingApi
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), a => a.MigrationsAssembly("DAL"));
             });
 
+            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IApartmentRepository, ApartmentRepository>();
             builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
