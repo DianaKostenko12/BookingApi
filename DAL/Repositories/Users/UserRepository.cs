@@ -1,6 +1,7 @@
 ﻿using BookingApi.Data;
 using BookingApi.Models;
 using DAL.Repositories.Users;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookingApi.Repository
 {
@@ -24,14 +25,14 @@ namespace BookingApi.Repository
             return Save();
         }
 
-        public User GetUserById(int id)
+        public User GetUserByEmail(string email)
         {
-            return _context.Users.Where(u => u.Id == id).FirstOrDefault();
+            return _context.Users.Where(e => e.Email == email).FirstOrDefault();
         }
 
-        public IEnumerable<User> GetUsers()
+        public async Task<IEnumerable<User>> GetUsers()
         {
-            return _context.Users.OrderBy(u => u.Id).ToList();
+            return await _context.Users.ToListAsync();
         }
 
         public bool Save()
@@ -44,11 +45,6 @@ namespace BookingApi.Repository
         {
             _context.Update(user);
             return Save();
-        }
-
-        public bool UserExists(int userId)
-        {
-            return _context.Users.Any(u => u.Id == userId);
         }
     }
 }
