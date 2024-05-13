@@ -50,7 +50,7 @@ namespace BLL.Services.Reservations
                 Apartment = apartment
             };
 
-            // Add the reservation to the repository
+            // Add new reservation to the database
             _reservationRepository.Add(reservation);
             _reservationRepository.Save();
 
