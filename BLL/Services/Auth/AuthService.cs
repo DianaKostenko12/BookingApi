@@ -24,16 +24,20 @@ namespace BLL.Services.Auth
             _configuration = configuration;
         }
 
+        // Method to register a new user
         public ErrorOr<Success> Register(RegisterDescriptor descriptor)
         {
+            // Check if user with the same email already exists
             var users = _userRepository.GetUserByEmail(descriptor.Email);
             if (users != null)
             {
                 return Error.NotFound(description: "User with that email already exists");
             }
 
+            // Create password hash and salt
             CreatePasswordHash(descriptor.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
+            // Create a new user object
             var registerUser = new User
             {
                 FirstName = descriptor.FirstName,
@@ -43,31 +47,38 @@ namespace BLL.Services.Auth
                 PasswordSalt = JsonConvert.SerializeObject(passwordSalt)
             };
 
+            // Save the new user
             _userRepository.CreateUser(registerUser);
             _userRepository.Save();
 
             return Result.Success;
         }
 
+        // Method to authenticate and log in a user
         public ErrorOr<string> Login(LoginDescriptor descriptor)
         {
+            // Check if user with the specified email exists
             if (_userRepository.GetUserByEmail(descriptor.Email) == null)
             {
                 return Error.NotFound(description: "User is not found");
             }
 
+            // Get the user's password hash and salt
             User user = _userRepository.GetUserByEmail(descriptor.Email);
             byte[] passwordHash = JsonConvert.DeserializeObject<byte[]>(user.PasswordHash);
             byte[] passwordSalt = JsonConvert.DeserializeObject<byte[]>(user.PasswordSalt);
 
+            // Verify the password
             if (!VerifyPaswordHash(descriptor.Password, passwordHash, passwordSalt))
             {
                 return Error.Failure(description: "Wrong password");
             }
 
+            // Create and return a JWT token
             return CreateToken(user);
         }
 
+        // Method to create a password hash
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             using (var hmac = new HMACSHA512())
@@ -77,6 +88,7 @@ namespace BLL.Services.Auth
             }
         }
 
+        // Method to create a JWT token
         private string CreateToken(User user)
         {
             List<Claim> claims = new List<Claim>
@@ -99,6 +111,7 @@ namespace BLL.Services.Auth
             return jwt;
         }
 
+        // Method to verify a password hash
         private bool VerifyPaswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
         {
             using (var hmac = new HMACSHA512(passwordSalt))

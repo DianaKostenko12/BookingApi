@@ -16,9 +16,11 @@ namespace BookingApi.Controllers
             _mapper = mapper;
         }
 
+        // GET request to retrieve all apartments
         [HttpGet]
         public IActionResult GetAllApartments() 
         {
+            // Map apartments from entity to ApartmentResponse DTOs using AutoMapper
             var apartments = _mapper.Map<List<ApartmentResponse>>(_apartmentRepository.GetAll());
             return Ok(apartments);
         }

@@ -22,9 +22,10 @@ namespace BookingApi
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddHttpContextAccessor();
+            builder.Services.AddHttpContextAccessor(); // Add HTTP context accessor
             builder.Services.AddSwaggerGen(options =>
             {
+                // Configure Swagger
                 options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
                 {
                     Description = "Standard Authorization header using the Bearer scheme (\"bearer {token}\")",
@@ -33,10 +34,10 @@ namespace BookingApi
                     Type = SecuritySchemeType.ApiKey
                 });
 
-                options.OperationFilter<SecurityRequirementsOperationFilter>();
+                options.OperationFilter<SecurityRequirementsOperationFilter>(); // Add security requirements operation filter
             });
 
-            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme) // Add JWT authentication
                 .AddJwtBearer(options => {
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
@@ -50,16 +51,17 @@ namespace BookingApi
 
             builder.Services.AddDbContext<DataContext>(options =>
             {
+                // Configure the data context with SQL Server and migrations assembly
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), a => a.MigrationsAssembly("DAL"));
             });
 
-            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            builder.Services.AddScoped<IUserRepository, UserRepository>();
-            builder.Services.AddScoped<IApartmentRepository, ApartmentRepository>();
-            builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
+            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); // Add AutoMapper
+            builder.Services.AddScoped<IUserRepository, UserRepository>(); // Add user repository
+            builder.Services.AddScoped<IApartmentRepository, ApartmentRepository>(); // Add apartment repository
+            builder.Services.AddScoped<IReservationRepository, ReservationRepository>(); // Add reservations repository
 
-            builder.Services.AddScoped<IReservationService, ReservationService>();
-            builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<IReservationService, ReservationService>(); // Add reservation service
+            builder.Services.AddScoped<IAuthService, AuthService>();  // Add authentication service
 
             var app = builder.Build();
 
